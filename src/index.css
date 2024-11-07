@@ -23,3 +23,27 @@ width: 100%;
     list-style: decimal;
     padding-left: 2em;
   }
+
+
+  @media print{
+    #no-print{
+      display: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      height: 100%;
+
+    }
+    #print-area{
+      display: block;
+    }
+  }
+
+  @page{
+    size: auto;
+    margin: 0mm;
+  }
+

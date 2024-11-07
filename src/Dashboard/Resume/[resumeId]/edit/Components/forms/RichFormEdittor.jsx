@@ -6,7 +6,7 @@ import {
 } from 'react-simple-wysiwyg';
 import { AIchatSession } from '../../../../../../../Service/AiModel';
 
-const RichFormEdittor = ({ onRichFormEdittor }) => {
+const RichFormEdittor = ({ onRichFormEdittor,defaultValue }) => {
   const [value, setValue] = useState(''); // Ensure two-way binding with editor
   const [loading, setLoading] = useState(false);
   const [aiGeneratedSummary, setAiGeneratedSummary] = useState(''); // Store AI-generated summary
@@ -21,6 +21,7 @@ const RichFormEdittor = ({ onRichFormEdittor }) => {
       let aiSummary = await result.response.text(); // Get the AI-generated response text
       aiSummary = aiSummary.replace(/```html/g, '').replace(/```/g, '').trim();
       console.log('AI Generated Summary:', aiSummary); // Log the response
+      defaultValue = aiSummary;
 
       setAiGeneratedSummary(aiSummary); // Store in state
       setValue(aiSummary); // Set the AI summary as the editor's value

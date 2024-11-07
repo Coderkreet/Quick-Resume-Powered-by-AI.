@@ -28,7 +28,7 @@ const ExperienceDatainfo = ({ resumeinfo }) => {
             </h2>
             {/* <p className='text-xs my-2'>{experience.workSummery}</p> */}
 
-            <div dangerouslySetInnerHTML={{__html:experience.workSummery}}/>
+            <div className='text-xs my-2' dangerouslySetInnerHTML={{__html:experience.workSummery}}/>
 
           </div>
         ))

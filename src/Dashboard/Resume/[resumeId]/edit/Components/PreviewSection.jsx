@@ -9,13 +9,16 @@ import SkillsDatainfo from './previewInfo/SkillsDatainfo';
 const PreviewSection = () => {
 const{resumeinfo , setResumeinfo} = useContext(ResumeInfoContext);
 
+
+if (!resumeinfo) {
+  return <div>Loading...</div>; // Or any placeholder content while waiting for data
+}
   return (
     <div
     style={{borderColor :`${resumeinfo?.themeColor}`}}
     className='shadow-lg h-full p-14 border-t-[20px]'>
       {/* Parsnol data */}
         <PersonalDetailPreview resumeinfo = {resumeinfo}/>
-
       {/* summary */}
       <Summaryinfo  resumeinfo = {resumeinfo} />
       {/* Education */}

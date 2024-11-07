@@ -6,15 +6,24 @@ import ExperienceForm from './forms/ExperienceForm'
 import SkillsForm from './forms/SkillsForm'
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
 import { FiBox } from 'react-icons/fi'
+import { Link, Navigate, useParams } from 'react-router-dom'
+import { HiHome } from 'react-icons/hi'
+import { CgHome } from 'react-icons/cg'
+import { BiHomeAlt2 } from 'react-icons/bi'
+import ThemeColor from './ThemeColor'
 
 const FormSection = () => {
 const [ActiveFormIndex, setActiveFormIndex] = useState(1)
 const [enableNext , setEnableNext] = useState(false)
+const {resumeId} = useParams();
 
   return (
     <div>
 <div className='flex items-center justify-between'>
-    <button><FiBox className='text-4xl' />    </button>
+
+  <div className='flex items-center gap-7'>
+   <ThemeColor/>
+  </div>
     <div className='flex  gap-x-6 justify-end'>
       {
         ActiveFormIndex >1&& (
@@ -59,7 +68,10 @@ ActiveFormIndex ===1 ? <PersonalDetailForm  enableNext ={enableNext} setEnableNe
 {
   ActiveFormIndex ===5? <SkillsForm  enableNext ={enableNext} setEnableNext ={setEnableNext} /> : null
 }
+{
+ ActiveFormIndex ===6 ? <Navigate to={'/my-resume/'+resumeId+'/view'} />:null
 
+}
       
     </div>
   )

@@ -18,7 +18,6 @@ const [resumeList , setResumeList] = useState([])
 
   useEffect(()=>{
     user&&getResumeList();
-
   },[user])
   return (
     <div>
@@ -29,7 +28,7 @@ const [resumeList , setResumeList] = useState([])
   <AddResume />
   {
     resumeList.length>0 && resumeList.map((resume,index)=>{
-      return <ResumeCardItem key={index}  {...resume} />
+      return <ResumeCardItem key={index} referenceData={getResumeList} resume={resume} />
     })
   }
 </div>

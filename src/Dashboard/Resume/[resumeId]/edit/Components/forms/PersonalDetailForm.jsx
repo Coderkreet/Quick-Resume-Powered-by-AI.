@@ -5,52 +5,60 @@ import GlobalApi from '../../../../../../../Service/GlobalApi';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
-const PersonalDetailForm = ({setEnableNext , enableNext}) => {
-
+const PersonalDetailForm = ({ setEnableNext, enableNext }) => {
   const params = useParams();
   const { resumeinfo, setResumeinfo } = useContext(ResumeInfoContext);
 
-const [formdata , setFormdata] = useState()
-const [loading , setLoafing] = useState(false)
+  const [formdata, setFormdata] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{
-console.log(params);
-  },[])
+  // Ensure resumeinfo is set when the component mounts
+  useEffect(() => {
+    if (resumeinfo) {
+      setFormdata({
+        firstName: resumeinfo.firstName || '',
+        lastName: resumeinfo.lastName || '',
+        jobTitle: resumeinfo.jobTitle || '',
+        address: resumeinfo.address || '',
+        phone: resumeinfo.phone || '',
+        email: resumeinfo.email || '',
+      });
+    }
+  }, [resumeinfo]);
 
-
-  const HandleChange = (e) => {
-
-
-    setEnableNext(false)
-    const {name,value}=e.target;
-    setResumeinfo({
-      ...resumeinfo,
-      [name]:value
-  })
+  const handleChange = (e) => {
+    setEnableNext(false);
+    const { name, value } = e.target;
     setFormdata({
       ...formdata,
-      [name]:value
-  })
+      [name]: value,
+    });
+
+    setResumeinfo({
+      ...resumeinfo,
+      [name]: value,
+    });
   };
 
-  const HandleSubmit = (e) => {
-    setLoafing(true)
-    const data ={
-      data: formdata
-    }
+  const handleSubmit = (e) => {
+    setLoading(true);
+    const data = {
+      data: formdata,
+    };
     e.preventDefault();
-    GlobalApi.UpdateResumeDetail(params?.resumeId,data).then((resp)=>{
-      console.log(resp)
-      setEnableNext(true)
-      setLoafing(false);
-      toast.success("Saved")
-    },(e)=>{
-      console.error('Error while updating resume:', e);
-      setLoafing(false);
-      setEnableNext(false);
-    })
 
-    setEnableNext(true)
+    GlobalApi.UpdateResumeDetail(params?.resumeId, data)
+      .then((resp) => {
+        console.log(resp);
+        setEnableNext(true);
+        setLoading(false);
+        toast.success('Saved');
+      })
+      .catch((e) => {
+        console.error('Error while updating resume:', e);
+        setLoading(false);
+        setEnableNext(false);
+      });
   };
 
   return (
@@ -60,16 +68,16 @@ console.log(params);
         <p>Get Started with the basic Information</p>
       </div>
 
-      <form onSubmit={HandleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className='flex flex-col mt-8 flex-wrap gap-y-8'>
           <div className='flex flex-wrap justify-between'>
             <div className='flex gap-x-4'>
               <label htmlFor=''>First Name</label>
               <input
-              defaultValue={resumeinfo.firstName}
+                value={formdata.firstName}
                 type='text'
                 name='firstName'
-                onChange={HandleChange}
+                onChange={handleChange}
                 required
                 className='border-purple-400 hover:border-purple-600 border-2 rounded-md'
               />
@@ -77,10 +85,10 @@ console.log(params);
             <div className='flex gap-x-4'>
               <label htmlFor=''>Last Name</label>
               <input
-                defaultValue={resumeinfo.lastName}
+                value={formdata.lastName}
                 type='text'
                 name='lastName'
-                onChange={HandleChange}
+                onChange={handleChange}
                 required
                 className='border-purple-400 hover:border-purple-600 border-2 rounded-md'
               />
@@ -90,11 +98,10 @@ console.log(params);
           <div className='flex w-full gap-x-4'>
             <label htmlFor=''>Job Title</label>
             <input
-                            defaultValue={resumeinfo.jobTitle}
-
+              value={formdata.jobTitle}
               type='text'
               name='jobTitle'
-              onChange={HandleChange}
+              onChange={handleChange}
               required
               className='border-purple-400 w-[89%] hover:border-purple-600 border-2 rounded-md'
             />
@@ -103,10 +110,10 @@ console.log(params);
           <div className='flex w-full gap-x-4'>
             <label htmlFor=''>Address</label>
             <input
-            defaultValue={resumeinfo.address}
+              value={formdata.address}
               type='text'
               name='address'
-              onChange={HandleChange}
+              onChange={handleChange}
               required
               className='border-purple-400 w-[89%] hover:border-purple-600 border-2 rounded-md'
             />
@@ -116,10 +123,10 @@ console.log(params);
             <div className='flex gap-x-4'>
               <label htmlFor=''>Phone</label>
               <input
-              defaultValue={resumeinfo.phone}
+                value={formdata.phone}
                 type='text'
                 name='phone'
-                onChange={HandleChange}
+                onChange={handleChange}
                 required
                 className='border-purple-400 hover:border-purple-600 border-2 rounded-md'
               />
@@ -127,10 +134,10 @@ console.log(params);
             <div className='flex gap-x-4'>
               <label htmlFor=''>Email</label>
               <input
-              defaultValue={resumeinfo.email}
+                value={formdata.email}
                 type='email'
                 name='email'
-                onChange={HandleChange}
+                onChange={handleChange}
                 required
                 className='border-purple-400 hover:border-purple-600 border-2 rounded-md'
               />
@@ -139,14 +146,9 @@ console.log(params);
 
           <div className='flex justify-end'>
             <div className='w-[7rem] flex gap-x-3 justify-center items-center bg-purple-500 text-white rounded-xl h-[2.5rem]'>
-              <button type='submit'
-              disabled={loading}
-              >
-                {
-                  loading?<RiLoader2Line className='animate-spin'/>:
-                  'Save'
-                }
-                </button>
+              <button type='submit' disabled={loading}>
+                {loading ? <RiLoader2Line className='animate-spin' /> : 'Save'}
+              </button>
             </div>
           </div>
         </div>

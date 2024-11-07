@@ -11,6 +11,7 @@ import EditResume from './Dashboard/Resume/[resumeId]/edit/index.jsx';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ViewResume from './my-resume/[resume-id]/ViewResume.jsx';
 
 // const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 const PUBLISHABLE_KEY = 'pk_test_c3RlYWR5LW1vbmtmaXNoLTQyLmNsZXJrLmFjY291bnRzLmRldiQ'
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
   {
     path: '/auth/sign-in',
     element: <SignInPage />
-  }
+  },
+  {
+    path: '/my-resume/:resumeId/view',
+    element: <ViewResume />
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(

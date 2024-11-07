@@ -24,7 +24,7 @@ const SkillsDatainfo = ({ resumeinfo }) => {
                     className='h-2'
                     style={{
                       backgroundColor: `${resumeinfo?.themeColor}`, // Set the color for the skill bar
-                      width: `${skill?.rating}%` // Set the width based on skill rating
+                      width: `${skill?.rating *20}%` // Set the width based on skill rating
                     }}
                   />
                 </div>

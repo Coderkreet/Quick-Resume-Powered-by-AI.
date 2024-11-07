@@ -11,24 +11,22 @@ const SummaryForm = ({ setEnableNext, enableNext }) => {
   const params = useParams();
   const { resumeinfo, setResumeinfo } = useContext(ResumeInfoContext);
 
-  const [summery, setsummary] = useState('');
+  const [summery, setsummary] = useState(''); // Bind with textarea
   const [loading, setLoading] = useState(false);
-  const [aiGeneratedSummary, setAiGeneratedSummary] = useState(''); // New state for AI-generated summary
+  const [aiGeneratedSummary, setAiGeneratedSummary] = useState('');
 
+  // This will set the summary once the resumeinfo is available
   useEffect(() => {
-    if (summery) {
-      setResumeinfo({
-        ...resumeinfo,
-        summery: summery,
-      });
+    if (resumeinfo && resumeinfo.summery) {
+      setsummary(resumeinfo.summery); // Set the initial summary from resumeinfo
     }
-  }, [summery]);
+  }, [resumeinfo]); // Run when resumeinfo changes
 
   const HandleSubmitForm = (e) => {
     setLoading(true);
     const data = {
       data: {
-        summery: summery,
+        summery: summery, // Send the updated summary
       },
     };
     e.preventDefault();
@@ -49,14 +47,12 @@ const SummaryForm = ({ setEnableNext, enableNext }) => {
   const generateSummaryFromAI = async () => {
     setLoading(true);
     const prompt = `Job Title: ${resumeinfo?.jobTitle}, based on the job title, provide a summary within 2-3 lines.`;
-    console.log(prompt);
 
     try {
       const result = await AIchatSession.sendMessage(prompt);
-      const aiSummary = await result.response.text(); // Get the response text
-      console.log('AI Generated Summary:', aiSummary); // Only log the response
-      setAiGeneratedSummary(aiSummary); // Store the response in state
-      setsummary(aiSummary); // Optionally update the 'summery' state with AI-generated summary
+      const aiSummary = await result.response.text();
+      setAiGeneratedSummary(aiSummary);
+      setsummary(aiSummary); // Set the AI-generated summary in the state
       setLoading(false);
     } catch (error) {
       console.error('Error generating summary from AI:', error);
@@ -91,13 +87,11 @@ const SummaryForm = ({ setEnableNext, enableNext }) => {
       <form onSubmit={HandleSubmitForm}>
         <div className='relative  my-10 mb-3' data-twe-input-wrapper-init>
           <textarea
-          defaultValue={aiGeneratedSummary}
-            required
-            value={summery} // Bind the summary state to the textarea value
+            value={summery} // Bind the textarea value with the summery state
             onChange={(e) => {
               setsummary(e.target.value);
             }}
-            className='peer  text-xl border-purple-700 rounded-xl  block min-h-[auto] w-full  border-2 bg-transparent px-3  py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0'
+            className='peer text-xl border-purple-700 rounded-xl block min-h-[auto] w-full border-2 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0'
             id='exampleFormControlTextarea1'
             rows='7'
             style={{ color: 'black' }}

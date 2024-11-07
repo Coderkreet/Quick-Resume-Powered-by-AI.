@@ -17,6 +17,9 @@ const CreateNewResume = (data)=>axiosClint.post('/user-resumes',{data})
 const GetUserResume = (userEmail) => axiosClint.get('/user-resumes?filters[userEmail][$eq]='+userEmail);
 
 const UpdateResumeDetail = (id, data) => axiosClint.put(`/user-resumes/${id}`, data);
+
+const GetResumeById = (id) => axiosClint.get(`/user-resumes/${id}?populate=*`);
+const DeleteResumeById = (id) => axiosClint.delete(`/user-resumes/${id}`);
 export default {
-    CreateNewResume ,GetUserResume,UpdateResumeDetail
+    CreateNewResume ,GetUserResume,UpdateResumeDetail,GetResumeById,DeleteResumeById
 }
